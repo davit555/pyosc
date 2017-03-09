@@ -869,10 +869,26 @@ def _readDouble(data):
 
 	return (float, rest)
 
+def _readBoolTrue(data):
+    """No bytes ar allocated in case of Boolean value"""
+
+    return (True, data)
+
+
+def _readBoolFalse(data):
+    """No bytes ar allocated in case of Boolean value"""
+
+    return (False, data)
+
 def decodeOSC(data):
 	"""Converts a binary OSC message to a Python list. 
 	"""
-	table = {"i":_readInt, "f":_readFloat, "s":_readString, "b":_readBlob, "d":_readDouble, "t":_readTimeTag}
+	table = {
+		"i": _readInt, "f": _readFloat, "s": _readString,
+		"b": _readBlob, "d": _readDouble, "t": _readTimeTag,
+		"T": _readBoolTrue, "F": _readBoolFalse
+	}
+
 	decoded = []
 	address,  rest = _readString(data)
 	if address.startswith(","):
